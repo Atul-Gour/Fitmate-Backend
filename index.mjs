@@ -24,11 +24,25 @@ mongoose.connect(process.env.MONGO_URI)
 app.set("trust proxy", 1);
 app.use(express.json());
 
-const FRONTEND = (process.env.FRONTEND_URL || "").replace(/\/$/, "");
+const FRONTEND_URLS = (process.env.FRONTEND_URLS || "")
+  .split(",")
+  .map((url) => url.replace(/\/$/, ""));
+
+const allowedOrigins = [
+  ...FRONTEND_URLS,
+  "http://localhost:5173"
+];
 
 app.use(
   cors({
-    origin: [FRONTEND, "http://localhost:5173"],
+    origin: function (origin, callback) {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
