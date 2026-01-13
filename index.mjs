@@ -81,21 +81,11 @@ app.get("/",(req,res)=>{
     res.send("hello");
 })
 
-app.get("/mongo-info", async (req, res) => {
-  try {
-    const conn = mongoose.connection;
-    res.json({
-      host: conn.host,
-      name: conn.name,
-      port: conn.port,
-      readyState: conn.readyState,
-    });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
+app.get("/cast-check", (req, res) => {
+  res.json({
+    stringCastingDisabled: mongoose.Schema.Types.String.cast() === false
+  });
 });
-
-
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT,()=>{
