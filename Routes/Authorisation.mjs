@@ -24,7 +24,16 @@ router.get("/auth/me", isAuthenticated, (req, res) => {
 
 
 router.post("/auth/signup", async (req, res) => {
-  const { name, email, username, password } = req.body;
+  const { name, email, username, password: rawPassword } = req.body;
+
+  const password = rawPassword !== undefined && rawPassword !== null
+    ? String(rawPassword)
+    : "";
+  
+  if (!password) {
+    return res.status(400).json({ message: "Password is required" });
+  }
+
   try {
     const existingUser = await User.findOne({ $or: [{ email }, { username }] });
     if (existingUser) {
