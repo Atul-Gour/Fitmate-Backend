@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 mongoose.set("strictQuery", true);
-mongoose.Schema.Types.String.cast(false); 
 
 const userSchema = new mongoose.Schema({
   username: {
