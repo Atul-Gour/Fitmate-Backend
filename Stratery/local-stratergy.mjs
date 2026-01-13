@@ -26,7 +26,7 @@ export default passport.use(
                 $or: [{ username: identifier }, { email: identifier }],
             });
             if(!findUser)return done(null, false, { message: "No user present with this username." });
-            const isMatch =comparePassword(password, findUser.password);
+            const isMatch =await comparePassword(password, findUser.password);
             if (!isMatch) return done(null, false, { message: "Invalid credentials" });
             return done(null,findUser);
             }
