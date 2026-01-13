@@ -34,12 +34,6 @@ router.post("/auth/signup", async (req, res) => {
     return res.status(400).json({ message: "Password is required" });
   }
 
-  console.log("RAW PASSWORD:", rawPassword);
-  console.log("RAW PASSWORD TYPE:", typeof rawPassword);
-  console.log("FINAL PASSWORD:", password);
-  console.log("FINAL PASSWORD TYPE:", typeof password);
-
-
   try {
     const existingUser = await User.findOne({ $or: [{ email }, { username }] });
     if (existingUser) {
