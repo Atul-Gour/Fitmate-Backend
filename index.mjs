@@ -81,11 +81,7 @@ app.get("/",(req,res)=>{
     res.send("hello");
 })
 
-app.get("/cast-check", (req, res) => {
-  res.json({
-    stringCastingDisabled: mongoose.Schema.Types.String.cast() === false
-  });
-});
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT,()=>{
