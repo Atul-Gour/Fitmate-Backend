@@ -24,7 +24,6 @@ router.get("/auth/me", isAuthenticated, (req, res) => {
 
 
 router.post("/auth/signup", async (req, res) => {
-  return res.status(200).json({ message: "NEW VERSION RUNNING" });
   const { name, email, username, password: rawPassword } = req.body;
 
   const password = rawPassword !== undefined && rawPassword !== null
