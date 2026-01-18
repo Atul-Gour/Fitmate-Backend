@@ -1,14 +1,27 @@
 import express from "express";
 const router = express.Router();
+import { getWeatherPreview } from "../helper/getWeather.mjs";
 
-router.post("/", (req, res) => {
-  const { groundName, city, state, matchDate, matchTime } = req.body;
+router.post("/api/match/weather-preview", async (req, res) => {
+  const { city, state, matchDate, matchTime } = req.body;
 
-  if (!groundName || !city || !state || !matchDate || !matchTime) {
-    return res.status(400).json({ message: "Please fill all required fields" });
+  if (!city || !state || !matchDate || !matchTime) {
+    return res.status(400).json({ message: "Missing fields" });
   }
 
-  res.status(200).json({ message: "ClearWeather on that day" });
+  try {
+    const weather = await getWeatherPreview({
+      city,
+      state,
+      date: matchDate,
+      time: matchTime,
+    });
+
+    return res.json({ weather });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Failed to fetch weather preview" });
+  }
 });
 
 export default router;
